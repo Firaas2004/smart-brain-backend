@@ -1,7 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
 const database = {
   users: [
@@ -61,6 +63,17 @@ app.get("/profile/:id", (req, res) => {
     }
   });
 });
+
+app.post("/entries",(req,res)=>{
+  const { id } = req.body;
+  console.log(id);
+  database.users.forEach((user) => {
+    if (user.id == Number(id)) {
+      user.entry++
+      return res.json(user.entry);
+    }
+  });
+})
 
 app.listen(3000, () => {
   console.log("app is  running perfectly on port 3000");
